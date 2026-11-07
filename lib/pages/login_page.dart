@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
-import 'register_page.dart';
-import 'profile_page.dart';
+import '../routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,15 +19,12 @@ class _LoginPageState extends State<LoginPage> {
     if (formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
 
-      Navigator.push(
+      UserData.email = emailController.text;
+      UserData.password = passwordController.text;
+
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(
-            name: 'Дидора Дана Ярославовна',
-            email: emailController.text,
-            password: passwordController.text,
-          ),
-        ),
+        Routes.home,
       );
     }
   }
@@ -124,12 +120,9 @@ class _LoginPageState extends State<LoginPage> {
 
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const RegisterPage(),
-                          ),
+                          Routes.register,
                         );
                       },
                       child: const Text(

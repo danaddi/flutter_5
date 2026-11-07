@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
+import '../routes.dart';
 import '../widgets/text_field.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String name;
-  final String email;
-  final String password;
-
-  const ProfilePage({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.password,
-  });
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -29,22 +21,30 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
 
-    nameController =
-        TextEditingController(text: widget.name);
+    nameController = TextEditingController(
+      text: UserData.name,
+    );
 
-    emailController =
-        TextEditingController(text: widget.email);
+    emailController = TextEditingController(
+      text: UserData.email,
+    );
 
-    passwordController =
-        TextEditingController(text: widget.password);
+    passwordController = TextEditingController(
+      text: UserData.password,
+    );
 
-    confirmController =
-        TextEditingController(text: widget.password);
+    confirmController = TextEditingController(
+      text: UserData.password,
+    );
   }
 
   void save() {
     if (formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
+
+      UserData.name = nameController.text;
+      UserData.email = emailController.text;
+      UserData.password = passwordController.text;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -66,55 +66,26 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Профиль'),
+        centerTitle: true,
+        backgroundColor: Colors.lightGreenAccent,
+      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(20),
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                      ),
-                    ),
-
-                    const Expanded(
-                      child: Text(
-                        'Профиль',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(width: 48),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
-                Container(
-                  width: 130,
-                  height: 130,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      'assets/images/clean.png',
-                      fit: BoxFit.cover,
-                    ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    'assets/images/profile.jpg',
+                    width: 130,
+                    height: 130,
+                    fit: BoxFit.cover,
                   ),
                 ),
 
@@ -168,18 +139,35 @@ class _ProfilePageState extends State<ProfilePage> {
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text(
-                      'Сохранить',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: const Text('Сохранить'),
                   ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 1,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            label: 'Главная',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            label: 'Профиль',
+          ),
+        ],
+        onDestinationSelected: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(
+              context,
+              Routes.home,
+            );
+          }
+        },
       ),
     );
   }

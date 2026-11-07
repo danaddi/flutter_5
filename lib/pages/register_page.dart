@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
-import 'profile_page.dart';
+import '../routes.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -26,15 +26,14 @@ class _RegisterPageState extends State<RegisterPage> {
     if (formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
 
-      Navigator.push(
+      UserData.name = nameController.text;
+      UserData.email = emailController.text;
+      UserData.password = passwordController.text;
+
+      Navigator.pushNamedAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(
-            name: nameController.text,
-            email: emailController.text,
-            password: passwordController.text,
-          ),
-        ),
+        Routes.home,
+            (route) => false,
       );
     }
   }
