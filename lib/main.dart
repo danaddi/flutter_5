@@ -7,6 +7,9 @@ import 'pages/register_page.dart';
 import 'pages/home_page.dart';
 import 'pages/profile_page.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/patterns_bloc.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -23,7 +26,10 @@ class MyApp extends StatelessWidget {
         Routes.loading: (context) => const LoadingPage(),
         Routes.login: (context) => const LoginPage(),
         Routes.register: (context) => const RegisterPage(),
-        Routes.home: (context) => const HomePage(),
+        Routes.home: (context) => BlocProvider(
+          create: (context) => PatternsBloc(),
+          child: const HomePage(),
+        ),
         Routes.profile: (context) => const ProfilePage(),
       },
     );
